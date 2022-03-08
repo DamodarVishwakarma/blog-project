@@ -1,0 +1,21 @@
+{% extends "__base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<div>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-create' %}">Create Post</a>
+</div>
+{% endif %}
+{% for post in posts %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ post.author }}</a>
+            <small class="text-muted">{{ post.published_at|date:"M d, Y" }} | {{post.status}}</small>
+        </div>
+        <h2><a class="article-title" href="{% url 'blog-home' post.id %}">{{ post.title }}</a></h2>
+        <p class="article-content">{{ post.content }}</p>
+    </div>
+</article>
+{% endfor %}
+{% include 'post/pagination.html' %}
+{% endblock content %}

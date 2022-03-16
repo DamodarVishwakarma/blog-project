@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
-from .models import Post
+from .models import Post, Contact
 
 
 def home(request):
@@ -19,7 +19,22 @@ def home(request):
         "title": "HOME PAGE",
         "posts": posts,
     }
-    return render(request, template_name="home.html", context=context)
+    return render(request, template_name="post/home.html", context=context)
+
+
+def about(request):
+    return render(request, template_name='post/about.html')
+
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        desc = request.POST.get('desc', '')
+        contact = Contact(name=name, email=email, phone=phone, desc=desc)
+        contact.save()
+    return render(request, 'post/contact.html')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -27,7 +42,7 @@ class PostListView(ListView):
     model = Post
     template_name = 'post/home.html'
     context_object_name = 'blog-home'
-    paginate_by = 3
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
@@ -48,16 +63,16 @@ class PostListView(ListView):
 class PostCreateView(CreateView):
     model = Post
     template_name = 'post/post_form.html'
-    fields = ['title', 'contents', 'status', 'author']
+    fields = ['title', 'contents', 'status', 'author', 'image', 'video']
     success_url = reverse_lazy('blog-home')
 
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class PostDetailView(DetailView):
     model = Post
     template_name = 'post/post_detail.html'
     context_object_name = 'posts'
-    fields = ['title', 'contents']
+    fields = ['title', 'contents', 'image', 'video']
 
 
 @method_decorator(login_required, name='dispatch')
@@ -66,7 +81,7 @@ class PostUpdateView(UpdateView, DetailView):
     pk_url_kwarg = 'pk'
     template_name = 'post/post_update.html'
     context_object_name = 'posts'
-    fields = ['title', 'contents', 'status']
+    fields = ['title', 'contents', 'status', 'image', 'video']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -79,11 +94,11 @@ class PostUpdateView(UpdateView, DetailView):
         return False
 
     def get_success_url(self):
-        return reverse_lazy('post-detail', kwargs={'pk': self.object.id})
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.id})
 
 
 @method_decorator(login_required, name='dispatch')
 class PostDeleteView(DeleteView):
     model = Post
     template_name = 'post/post_confirm_delete.html'
-    success_url = reverse_lazy('post-list')
+    success_url = reverse_lazy('blog-home')

@@ -6,12 +6,26 @@
     <div class="article-metadata">
       <a class="mr-2" href="#">{{ object.author }}</a>
       <small class="text-muted">{{ object.published_at|date:"F d, Y" }}</small>
+      {% if user.is_authenticated %}
       <div>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{ url 'post-update' post.id }">Update</a>
-        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{ url 'post-delete' post.id }">Delete</a>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
       </div>
-      <h2 class="article-title">{{ object.title }}</h2>
+      {% endif %}
+      <h2 class="article-title">{{ object.title }}</h2><hr>
+      <br>
+      <img style='margin-left:65px;' src="{{ object.image.url }}" width="400" height="300" >
+      <br>
       <p class="article-content">{{ object.contents }}</p>
+      <br>
+      <video style='margin-left:65px;' width='400' controls>
+        <source src="{{ object.video.url }}" type='video/mp4'>
+        Your browser does not support the video tag.
+      </video>
+      <br>
+
+
+
     </div>
   </div>
 </article>

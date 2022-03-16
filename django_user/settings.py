@@ -121,6 +121,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
@@ -130,11 +131,11 @@ LOGIN_REDIRECT_URL = 'home'
 # Page to go after successfull logout
 # LOGOUT_REDIRECT_URL = 'home'
 
-# This will display email in Console.
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# This will display email in inbox.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'vishwakarmadamodar@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'vdamodar700@gmail.com'
+EMAIL_HOST_PASSWORD = 'damodar@123'
 EMAIL_PORT = 587

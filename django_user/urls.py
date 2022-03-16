@@ -19,7 +19,7 @@ urlpatterns = [
     # Main Page 
     path('', TemplateView.as_view(template_name='home.html'), name='home'), 
 
-    # Change Password
+    # Change Pasd
     path(
         'change-password/',
         auth_views.PasswordChangeView.as_view(

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Post
+from blog.models import Post,Contact
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -15,3 +15,4 @@ class PostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post, PostAdmin)
+admin.site.register(Contact)

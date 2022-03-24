@@ -1,6 +1,5 @@
 from django.urls import path
-from django.urls import re_path as url
-from core.views import SignUpView, ProfileView, ActivateAccount
+from core.views import ProfileView, ActivateAccount, SignUpView
 
 urlpatterns = [
 
@@ -9,7 +8,7 @@ urlpatterns = [
 
     path('activate/<uidb64>/<token>/', ActivateAccount.as_view(), name='activate'),
     # path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
-    #     activate, name='activate'),
-    # url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    #      ActivateAccount.as_view(), name='activate'),
+    # path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
     #      ActivateAccount.as_view(), name='activate'),
 ]

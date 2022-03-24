@@ -9,10 +9,7 @@ User = get_user_model()
 class SignUpForm(UserCreationForm):
     # first_name = forms.CharField(max_length=30, required=True)
     # last_name = forms.CharField(max_length=30, required=True)
-    # # list=['first_name','last_name']
-    # # username = ' '.join(list)
-    # # username=forms.CharField(username,required=True)
-    # email = forms.EmailField(max_length=254, help_text='Enter a valid email address')
+    email = forms.EmailField(max_length=254, help_text='Enter a valid email address')
 
     class Meta:
         model = User
@@ -27,16 +24,15 @@ class SignUpForm(UserCreationForm):
 
 # Profile Form
 class ProfileForm(forms.ModelForm):
-    username = forms.CharField(max_length=30, required=False)
-    first_name = forms.CharField(max_length=30, required=False)
-    last_name = forms.CharField(max_length=30, required=False)
-    email = forms.EmailField(max_length=254, help_text='Enter a valid email address')
+    # username = forms.CharField(max_length=30, required=False)
+    # first_name = forms.CharField(max_length=30, required=False)
+    # last_name = forms.CharField(max_length=30, required=False)
+    # email = forms.EmailField(max_length=254, help_text='Enter a valid email address')
 
     class Meta:
         model = User
         fields = [
-            'username',
-            'first_name',
-            'last_name',
+            'firstname',
+            'lastname',
             'email',
         ]

@@ -37,33 +37,39 @@ def contact(request):
     return render(request, 'post/contact.html')
 
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class PostListView(ListView):
+    queryset = Post.published.all()
     model = Post
     template_name = 'post/home.html'
-    context_object_name = 'blog-home'
-    paginate_by = 2
+    ordering = ['-published_at']
+    context_object_name = 'posts'
+    paginate_by = 3
 
-    def get_context_data(self, **kwargs):
-        context = super(PostListView, self).get_context_data(**kwargs)
-        posts = self.get_queryset()
-        page = self.request.GET.get('page')
-        paginator = Paginator(posts, self.paginate_by)
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-        context['posts'] = posts
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(PostListView, self).get_context_data(**kwargs)
+    #     posts = self.get_queryset()
+    #     page = self.request.GET.get('page')
+    #     paginator = Paginator(posts, self.paginate_by)
+    #     try:
+    #         posts = paginator.page(page)
+    #     except PageNotAnInteger:
+    #         posts = paginator.page(1)
+    #     except EmptyPage:
+    #         posts = paginator.page(paginator.num_pages)
+    #     context['posts'] = posts
+    #     return context
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context_data = super().get_context_data()
+        context_data['title'] = "BLOG HOME PAGE"
+        return context_data
 
 
 @method_decorator(login_required, name='dispatch')
 class PostCreateView(CreateView):
     model = Post
     template_name = 'post/post_form.html'
-    fields = ['title', 'contents', 'status', 'author', 'image', 'video']
+    fields = ['title', 'contents', 'status', 'author', 'image', 'video', 'URL_field']
     success_url = reverse_lazy('blog-home')
 
 
@@ -72,16 +78,16 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'post/post_detail.html'
     context_object_name = 'posts'
-    fields = ['title', 'contents', 'image', 'video']
+    fields = ['title', 'contents', 'image', 'video', 'URL_field']
 
 
 @method_decorator(login_required, name='dispatch')
-class PostUpdateView(UpdateView, DetailView):
+class PostUpdateView(UpdateView):
     model = Post
     pk_url_kwarg = 'pk'
     template_name = 'post/post_update.html'
     context_object_name = 'posts'
-    fields = ['title', 'contents', 'status', 'image', 'video']
+    fields = ['title', 'contents', 'status', 'image', 'video', 'URL_field']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

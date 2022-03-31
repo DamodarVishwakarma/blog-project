@@ -9,22 +9,23 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', include(core_urls)),
-    path('blog/', include('blog.urls')),
+    path('core/', include(core_urls)),
+    path('', include('blog.urls')),
 
     # Login and Logout
-    path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True, template_name='commons/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(redirect_authenticated_user=True, template_name='commons/login.html'),
+         name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
 
     # Main Page 
-    path('', TemplateView.as_view(template_name='home.html'), name='home'), 
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
 
     # Change Pasd
     path(
         'change-password/',
         auth_views.PasswordChangeView.as_view(
             template_name='commons/change-password.html',
-            success_url = '/'
+            success_url='/'
         ),
         name='change_password'
     ),
@@ -56,6 +57,3 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-

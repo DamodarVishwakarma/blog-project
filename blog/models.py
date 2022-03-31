@@ -1,12 +1,13 @@
 from distutils.command.upload import upload
 from email.mime import image
 from email.policy import default
+from urllib.parse import urlparse
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-
 
 User = get_user_model()
 
@@ -24,17 +25,22 @@ class Post(models.Model):
     title = models.CharField(max_length=20)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="blog_posts")
     contents = models.TextField()
-    image = models.ImageField(default='default.jpg', upload_to='images', null=True)
-    video = models.FileField(default=True, null=True)
+    image = models.ImageField(default=' ', upload_to='images', null=True)
+    video = models.FileField(default=' ', null=True)
     published_at = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     objects = models.Manager()
     published = PublishedManager()
+    URL_field = models.URLField(max_length=400, default=' ')
 
     class Meta:
         ordering = ("-published_at",)
+
+    def url_text(self):
+        parsed_url = urlparse(self.URL_field)
+        return parsed_url.hostname
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})

@@ -1,12 +1,13 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
 
 User = get_user_model()
 
 
 # Sign Up Form
-class SignUpForm(UserCreationForm):
+class SignUpForm(UserCreationForm, PopRequestMixin, CreateUpdateAjaxMixin, ):
     # first_name = forms.CharField(max_length=30, required=True)
     # last_name = forms.CharField(max_length=30, required=True)
     email = forms.EmailField(max_length=254, help_text='Enter a valid email address')

@@ -16,12 +16,14 @@ from django.core.mail import EmailMessage, send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 
-class SignUpView(View):
+class SignUpView(BSModalCreateView):
     User = get_user_model()
     form_class = SignUpForm
     template_name = 'commons/signup.html'
+    success_url = reverse_lazy('signup')
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -30,7 +32,7 @@ class SignUpView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save(commit=True)
             user.is_active = False  # Deactivate account till it is confirmed
             user.save()
 
@@ -49,6 +51,8 @@ class SignUpView(View):
             messages.success(request, 'Please Confirm your email to complete registration.')
 
             return redirect('login')
+        else:
+            redirect('signup')
 
         return render(request, self.template_name, {'form': form})
 
